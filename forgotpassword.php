@@ -30,13 +30,14 @@
           $headers .= "Content-type:text/html;charset=iso-8859-1" . "\r\n";
           $headers .= 'FROM:feedback@hotelnewoffers.com';
 
-
-          $message = "You have requested to recover your forgotten password.";
-          $message .= "<br/> Your account details are :- <br />";
+          $message = "<div style='background-color:#2EFE2E; padding:20px;'>";
+          $message .= "<div style='display:inline-block; border:1px solid black; font-size:20px; padding:10px; margin:auto;'>Casino App</div><br /><br />";
+          $message .= "You have requested to recover your forgotten password.";
+          $message .= "<br/> <br />Your account details are :- <br />";
           $message .= "Name : " . $name;
           $message .= "<br /> Password : " . $password . "<br />";
           $message .= "<br/> Please delete this email as soon as possible to avoid misuse.";
-
+          $message .= "</div>";
 
           $mailsent = mail($emailid, "Recover Your Password", $message, $headers);
           if ( $mailsent )

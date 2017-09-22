@@ -76,6 +76,7 @@
       }
 
       $query = "select user_id from roulette_bets where session_id = $sessionid and cases ='' and amount = 0";
+
       $result = mysqli_query($dbc, $query);
 
       if ( mysqli_num_rows($result) > 0 )
@@ -112,7 +113,7 @@
           stream_context_set_option($ctx, 'ssl', 'passphrase', $passphrase);
 
           // Open a connection to the APNS server
-          $fp = stream_socket_client('ssl://gateway.sandbox.push.apple.com:2195', $err, $errstr, 60, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $ctx);
+          $fp = stream_socket_client('ssl://gateway.push.apple.com:2195', $err, $errstr, 60, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $ctx);
 
           if ( !$fp )
               exit("Failed to connect: $err $errstr" . PHP_EOL);

@@ -3,6 +3,7 @@
   header('Content-Type:text/xml');
   echo '<?xml version="1.0" encoding="utf-8"?>';
   require_once 'variables/dbconnectionvariables.php';
+  require_once 'functions.php';
 
   $iconname = $_GET['icon_name'];
   $userid = $_GET['user_id'];
@@ -48,6 +49,10 @@
           echo '0';
       }
   }
+
+  $message = 'Sets ' . $iconname . ' as Profile Avatar';
+  insertIntoFeed($userid, $message, $dbc);
+  
   mysqli_close($dbc);
   echo '</result>';
 ?>

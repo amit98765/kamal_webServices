@@ -3,6 +3,7 @@
   header('Content-Type:text/xml');
   echo '<?xml version="1.0" encoding="utf-8"?>';
   require_once 'variables/dbconnectionvariables.php';
+  require_once 'functions.php';
 
 // chech whether all required parameters were passed.
   if ( !isset($_GET['user_id']) || !isset($_GET['icon_name']) || !isset($_GET['price']) || !isset($_GET['price_unit']) )
@@ -49,7 +50,10 @@
       // enter new purchased icon in the table
       $query = "insert into purchased_icons(user_id, icon_name) values ($userid, '$iconname')";
       mysqli_query($dbc, $query);
-
+      
+      $message = "Purchased $iconname";
+      insertIntoFeed($userid, $message, $dbc);
+      
       if ( mysqli_affected_rows($dbc) == 1 )
       {
 
@@ -103,13 +107,13 @@
                           while ( $row5 = mysqli_fetch_array($result5) )
                           {
                               echo '<gold>';
-                              echo $row5['gold'];
+                              echo number_format($row5['gold']);
                               echo '</gold>';
-      
+
                               echo '<chips>';
-                              echo $row5['chips'];
+                              echo number_format($row5['chips']);
                               echo '</chips>';
-                              
+
                               echo '<reward>';
                               echo $row5['reward'];
                               echo '</reward>';
@@ -126,6 +130,9 @@
                           // more than 1 row was returned
                           echo 'this case is possible only if there was error in forming user_cash table';
                       }
+
+                      $feedmsg ='Puchased ' . strtoupper($iconname) . ' Icon';
+                      insertIntoFeed($userid, $feedmsg, $dbc);
                   }
                   else
                       echo '<status>0</status>';

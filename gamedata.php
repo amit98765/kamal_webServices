@@ -17,6 +17,8 @@
       $sessionid = $_GET['session_id'];
       $userid = $_GET['user_id'];
 
+    setTimeZone();
+
       //sanity check the variable
       if ( !is_numeric($sessionid) )
       {
@@ -24,8 +26,6 @@
       }
       else
       {
-
-
           $pushids = array();
 
           // fetch all session ids playing gme in this session id
@@ -55,9 +55,9 @@
               {
                   $winnings = mysqli_fetch_row($result3);
 
-                  echo '<winnings>';
-                  echo $winnings[0];
-                  echo '</winnings>';
+                  echo '<winnings2>';
+                  echo number_format($winnings[0]);
+                  echo '</winnings2>';
               }
 
               $query = "select user_details.user_id,games_players.status,invitations.status, name, gold, chips, icon_name
@@ -228,7 +228,7 @@
                                       stream_context_set_option($ctx, 'ssl', 'passphrase', $passphrase);
 
                                       // Open a connection to the APNS server
-                                      $fp = stream_socket_client('ssl://gateway.sandbox.push.apple.com:2195', $err, $errstr, 60, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $ctx);
+                                      $fp = stream_socket_client('ssl://gateway.push.apple.com:2195', $err, $errstr, 60, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $ctx);
 
                                       if ( !$fp )
                                           exit("Failed to connect: $err $errstr" . PHP_EOL);
@@ -332,6 +332,39 @@
                       echo '<chips>';
                       echo $row['chips'];
                       echo '</chips>';
+
+                      echo '<chips1>';
+                      echo number_format($row['chips']);
+                      echo '</chips1>';
+
+                      echo '<chips2>';
+                      echo convertBackChips($row['chips']);
+                      echo '</chips2>';
+
+											echo '<confettiStatus>';
+
+                    $queryf1  = "select status, time from slots_confetti where user_id = $row[0] and session_id = $sessionid";
+                    $resultf1 = mysqli_query($dbc, $queryf1);
+
+                    if (mysqli_num_rows($resultf1) > 0)
+                    {
+                        $rowf1 = mysqli_fetch_row($resultf1);
+                        if ($rowf1[0] == 1 && (strtotime($rowf1[1]) - time() > 0 ))
+                        {
+                            echo '1';
+                        }
+                        else
+                        {
+                            echo '0';
+                        }
+                    }
+                    else
+                    {
+                        echo '0';
+                    }
+
+                    echo '</confettiStatus>';
+
 
                       echo '<icon_name>';
                       echo $row['icon_name'];
